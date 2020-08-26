@@ -1,0 +1,199 @@
+clear all
+close all
+clc
+
+global g
+global m2ft ft2m kg2lb lb2kg kg2slug slug2kg deg2rad rad2deg lbf2N N2lbf
+
+g = 9.80665;
+
+m2ft = 1/0.3048;
+ft2m = 1/m2ft;
+g_ft_s2 = g*m2ft;
+
+lb2kg = 0.45359237;
+kg2lb = 1/lb2kg;
+
+% Definition of slug: 1 slug is the mass that is accelerated by 1 ft/s²
+% when a force of 1 pound (1 lbf) is exerted on it
+slug2kg = g_ft_s2*lb2kg;
+kg2slug = 1/slug2kg;
+
+deg2rad = pi/180;
+rad2deg = 1/deg2rad;
+
+lbf2N = slug2kg*ft2m;
+N2lbf = 1/lbf2N;
+
+%--------------------------------------------------------------------------
+% F-16 geometric data:
+b = 30*ft2m;                 % Wing span
+S = 300*ft2m^2;              % Wing planform area
+c = 11.32*ft2m;              % Wing mean aerodynamic chord (m.a.c.)
+r_pilot_b = [15; 0; 0]*ft2m; % Pilot position vector, in body system
+aircraft.geom = struct('b',b,'c',c,'S',S,...
+    'r_pilot_b',r_pilot_b);
+
+%--------------------------------------------------------------------------
+% F-16 mass and inertia data:
+W = 20500; % lbf
+% Mass [slug]:
+m = W/g_ft_s2;
+% Mass [kg]:
+m = m*slug2kg;
+% Moments of inertia:
+Ixx = 9496*slug2kg*ft2m^2;
+Iyy = 55814*slug2kg*ft2m^2;
+Izz = 63100*slug2kg*ft2m^2;
+% Products of inertia:
+Ixy = 0*slug2kg*ft2m^2;
+Ixz = 982*slug2kg*ft2m^2;
+Iyz = 0*slug2kg*ft2m^2;
+J_O_b = [Ixx -Ixy -Ixz
+    -Ixy Iyy -Iyz
+    -Ixz -Iyz Izz];
+% Nominal CG: 0.35c
+xCG = 0;
+yCG = 0;
+zCG = 0;
+r_C_b = [xCG yCG zCG].';
+aircraft.mass = struct('m',m,'J_O_b',J_O_b,'r_C_b',r_C_b);
+
+%--------------------------------------------------------------------------
+% F-16 engine angular momentum:
+hex = 160; % slug·ft²/s
+hex = hex*slug2kg*ft2m^2;
+aircraft.prop = struct('hex',hex);
+
+%--------------------------------------------------------------------------
+% Testing the dynamics:
+
+% Stevens, Lewis, and Johnson, Table 3.5-2
+alpha_rad = 0.5;
+beta_rad = -0.2;
+C_bw = DCM(2,alpha_rad)*DCM(3,-beta_rad);
+V_b = C_bw*[500; 0; 0]*ft2m;
+omega_b = [0.7; -0.8; 0.9];
+p_deg_s = omega_b(1)*rad2deg;
+q_deg_s = omega_b(2)*rad2deg;
+r_deg_s = omega_b(3)*rad2deg;
+x0 = 1000*ft2m;
+y0 = 900*ft2m;
+h0 = 10000*ft2m;
+phi_rad = -1;
+theta_rad = 1;
+psi_rad = -1;
+phi_deg = phi_rad*rad2deg;
+theta_deg = theta_rad*rad2deg;
+psi_deg = psi_rad*rad2deg;
+power0 = 90;
+X0 = [V_b(1)
+    V_b(3)
+    q_deg_s
+    theta_deg
+    h0
+    x0
+    V_b(2)
+    phi_deg
+    p_deg_s
+    r_deg_s
+    psi_deg
+    y0
+    power0];
+throttle0 = 0.9;
+de_deg0 = 20;
+da_deg0 = -15;
+dr_deg0 = -20;
+U0 = [throttle0
+    de_deg0
+    da_deg0
+    dr_deg0];
+
+Xdot0 = dynamics(0,X0,U0,aircraft)
+
+u = V_b(1);
+v = V_b(2);
+w = V_b(3);
+V = sqrt(u^2+v^2+w^2);
+udot = Xdot0(1);
+vdot = Xdot0(7);
+wdot = Xdot0(2);
+Vdot = (u*udot+v*vdot+w*wdot)/V;
+
+alpha_dot_rad_s = (u*wdot-w*udot)/(u^2+w^2);
+beta_dot_rad_s = (V*vdot-v*Vdot)/(V*sqrt(u^2+w^2));
+alpha_dot_deg_s = alpha_dot_rad_s*rad2deg;
+beta_dot_deg_s = beta_dot_rad_s*rad2deg;
+
+Xdot0_Table3_5_2 = [Vdot*m2ft
+    alpha_dot_rad_s
+    beta_dot_rad_s
+    Xdot0(8)*deg2rad
+    Xdot0(4)*deg2rad
+    Xdot0(11)*deg2rad
+    Xdot0(9)*deg2rad
+    Xdot0(3)*deg2rad
+    Xdot0(10)*deg2rad
+    Xdot0(6)*m2ft
+    Xdot0(12)*m2ft
+    -Xdot0(5)*m2ft
+    Xdot0(13)]    
+
+% %--------------------------------------------------------------------------
+% % Equilibrium calculation:
+% 
+% V_eq = 502*ft2m;
+% h_eq = 0;
+% chi_deg_eq = 0;
+% gamma_deg_eq = 0;
+% phi_dot_deg_s_eq = 0.*rad2deg;
+% theta_dot_deg_s_eq = 0.*rad2deg;
+% % psi_dot_deg_s_eq = 0.3*rad2deg;
+% psi_dot_deg_s_eq = 0.*rad2deg;
+% 
+% trim_par = struct('V',V_eq,...
+%     'h',h_eq,...
+%     'chi_deg',chi_deg_eq,...
+%     'gamma_deg',gamma_deg_eq,...
+%     'phi_dot_deg_s',phi_dot_deg_s_eq,...
+%     'theta_dot_deg_s',theta_dot_deg_s_eq,...
+%     'psi_dot_deg_s',psi_dot_deg_s_eq);
+% 
+% x_eq_0 = zeros(14,1);
+% x_eq_0(1) = V_eq;
+% options = optimset('Display','iter','TolFun',1e-10,'TolX',1e-10);
+% [x_eq,fval,exitflag,output,jacobian] = fsolve(@trim_function,x_eq_0,options,aircraft,trim_par);
+% while exitflag<1
+%     [x_eq,fval,exitflag,output,jacobian] = fsolve(@trim_function,x_eq,options,aircraft,trim_par);
+% end
+% [~,X_eq,U_eq] = trim_function(x_eq,aircraft,trim_par);
+% 
+% [Xdot_eq,Y_eq] = dynamics(0,X_eq,U_eq,aircraft);
+% 
+% fprintf('----- TRIMMED FLIGHT PARAMETERS -----\n\n');
+% fprintf('   %-10s = %10.4f %-4s\n','x_CG',xCG,'m');
+% fprintf('   %-10s = %10.4f %-4s\n','y_CG',yCG,'m');
+% fprintf('   %-10s = %10.4f %-4s\n','z_CG',zCG,'m');
+% fprintf('   %-10s = %10.4f %-4s\n','gamma',trim_par.gamma_deg,'deg');
+% fprintf('   %-10s = %10.4f %-4s\n','chi',trim_par.chi_deg,'deg');
+% fprintf('   %-10s = %10.4f %-4s\n','phi_dot',trim_par.phi_dot_deg_s,'deg/s');
+% fprintf('   %-10s = %10.4f %-4s\n','theta_dot',trim_par.theta_dot_deg_s,'deg/s');
+% fprintf('   %-10s = %10.4f %-4s\n','psi_dot',trim_par.psi_dot_deg_s,'deg/s');
+% fprintf('\n');
+% fprintf('   %-10s = %10.2f %-4s\n','V',Y_eq(1),'m/s');
+% fprintf('   %-10s = %10.4f %-4s\n','alpha',Y_eq(2),'deg');
+% fprintf('   %-10s = %10.4f %-4s\n','q',X_eq(3),'deg/s');
+% fprintf('   %-10s = %10.4f %-4s\n','theta',X_eq(4),'deg');
+% fprintf('   %-10s = %10.1f %-4s\n','H',X_eq(5),'m');
+% fprintf('   %-10s = %10.4f %-4s\n','beta',Y_eq(3),'deg');
+% fprintf('   %-10s = %10.4f %-4s\n','phi',X_eq(8),'deg');
+% fprintf('   %-10s = %10.4f %-4s\n','p',X_eq(9),'deg/s');
+% fprintf('   %-10s = %10.4f %-4s\n','r',X_eq(10),'deg/s');
+% fprintf('   %-10s = %10.4f %-4s\n','psi',X_eq(11),'deg');
+% fprintf('\n');
+% fprintf('   %-10s = %10.2f %-4s\n','throttle',100*U_eq(1),'%');
+% fprintf('   %-10s = %10.4f %-4s\n','delta_e',U_eq(2),'deg');
+% fprintf('   %-10s = %10.4f %-4s\n','delta_a',U_eq(3),'deg');
+% fprintf('   %-10s = %10.4f %-4s\n','delta_r',U_eq(4),'deg');
+% 
+% save trim_data.mat X_eq U_eq Y_eq Xdot_eq
