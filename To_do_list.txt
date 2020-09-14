@@ -1,0 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%% TO DO LIST %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\\ Overleaf
+	[]- 
+
+\\ Matlab
+	[]-Normalizar otimizações
+	[]-Consertar matrix invertida do Catia 
+para o Matlab (Trocar alguns eixos)
+	[]-Verificar se equações são novas
+	[]-
