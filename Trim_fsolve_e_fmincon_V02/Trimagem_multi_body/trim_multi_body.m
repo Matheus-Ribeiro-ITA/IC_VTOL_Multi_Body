@@ -10,12 +10,12 @@ tic
 % ---------------------------------------------------------------------
 addpath ..\
 addpath ..\Sub_functions
-addpath ..\Trim_results
-addpath ..\Trimagem
+addpath ..\Trim_results_multi_body
+addpath ..\Trimagem_multi_body
 addpath ..\Aircraft_data
 
 load aircraft
-load trim_results_opt_v11.mat
+% load trim_results_opt_v11.mat
 %% --------------------------------------------------------------------------------
 %  --------------------------------------------------------------------------------
 %  Initial conditions
@@ -79,7 +79,7 @@ X_dot_0= [V
        sigma_dot
        sigma_dot_dot];
 
- U_0 = [0.5 % Motor
+ U_0 = [0.2 % Motor
      0  % Elevator
      0  % Aileron
      0];% Rudder
@@ -96,9 +96,6 @@ Y_0 = zeros(11,1);
 i=1;
 
 % First initial conditions
-
-
-for V_eq = 6:0.2:20
 
 cg(1,1)= 0.29;
 cg(2,1) = 0;        % PN=0.3 Catia = 0.3336
@@ -122,6 +119,9 @@ sigma_eq = 0;
 
 beta_eq = 0;
 
+
+for V_eq = 4:0.2:20
+
 trim_par = struct('V',V_eq,...
     'h',h_eq,...
     'chi',chi_eq,...
@@ -132,7 +132,7 @@ trim_par = struct('V',V_eq,...
     'beta',beta_eq, ...
     'sigma',sigma_eq);
 
-
+    
 % Ultima solucao
 
 ini_0= struct('X_0',X_0,'U_0',U_0,'Y_0',Y_0);
@@ -191,6 +191,8 @@ fprintf('   %-10s = %10.4f %-4s\n','delta_r',U_eq(4),'deg');
 
 fprintf('\n');
 fprintf('   %-10s = %10.4f %-4s\n','V',sqrt(X_eq(4,1)^2+X_eq(5,1)^2+X_eq(6,1)^2),' m/s');
+fprintf('   %-10s = %10.4f %-4s\n','V_b_x',X_eq(4,1),' m/s');
+fprintf('   %-10s = %10.4f %-4s\n','V_b_z',X_eq(6,1),' m/s');
 fprintf('   %-10s = %10.4f %-4s\n','CG',cg(1,1),'');
 fprintf('   %-10s = %10.4f %-4s\n','CL',Y_eq(10),'');
 % end
@@ -216,8 +218,7 @@ i=i+1;
 
 end
 %%
-save trim_results_opt_3.mat Mat_X_eq Mat_U_eq Mat_Y_eq Mat_V_eq
-
+save ..\Trim_results_multi_body/trim_results_opt_02.mat Mat_X_eq Mat_U_eq Mat_Y_eq Mat_V_eq
 time_opt= toc
 
 save time.mat time_opt

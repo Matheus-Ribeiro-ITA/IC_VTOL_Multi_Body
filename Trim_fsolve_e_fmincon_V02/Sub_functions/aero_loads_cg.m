@@ -178,7 +178,7 @@ CD_02= 0.1324;
 CD_01= -0.0498;
 CD_00= 0.0251;
 
-
+CD_00 = CD_00+ 0.03; % Parasite Drag
 
 CD_calc = CD_00 + CD_01*CL + CD_02*CL^2;
 

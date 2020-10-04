@@ -3,7 +3,7 @@ clc
 close all
 
 
-load Trim_results/trim_results_opt_3.mat
+load Trim_results_multi_body/trim_results_opt_02.mat
 Mat_X_eq_01=Mat_X_eq;
 Mat_U_eq_01=Mat_U_eq;
 Mat_Y_eq_01=Mat_Y_eq;

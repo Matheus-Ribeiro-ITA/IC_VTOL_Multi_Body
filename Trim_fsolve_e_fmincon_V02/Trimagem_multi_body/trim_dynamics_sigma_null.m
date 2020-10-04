@@ -1,16 +1,16 @@
-function  [f,X,U,Y] = trim_function_sigma_alpha(x,aircraft,trim_par) 
+function  [f,X,U,Y] = trim_dynamics_sigma_null(x,aircraft,trim_par) 
 
 % x(1,1) = de
-% x(2,1) = Sigma
-% x(3,1) = V_x
+% x(2,1) = V_bx
+% x(3,1) = throttle
 % x(4,1) = theta
-% x(5,1) = throttle
+% x(5,1) = V_bz
+
+alpha_eq = trim_par.alpha_eq;
 
 
-
-
-X= [ 0;0;trim_par.h; x(3,1);0;sin(trim_par.alpha_eq)*trim_par.V; 0 ;x(4,1);0; 0;0;0; x(2,1); 0];
-U = [x(5,1)
+X = [0;0;trim_par.h; x(2,1);0;x(5,1);0;x(4,1);0;0;0;0;0;0];
+U = [x(3,1)
     x(1,1)
     0
     0];
@@ -44,6 +44,8 @@ f = [X_dot(1)- x_dot_eq
     X_dot(4)
     X_dot(6)
     X_dot(11)];
+
+%     X_dot(6)
 
 
 

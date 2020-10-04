@@ -61,10 +61,10 @@ R_dot_T_r=mat;
 % ---------------------------------------------------------------------
 
 n_rotor= aircraft.n_rotor;
-m_B = aircraft.m_B;
-r_b_0 = aircraft.r_b_0;
+m_B=aircraft.m_B;
+r_b_0=aircraft.r_b_0;
 I_B = aircraft.I_B;
-r_cg_0 = aircraft.r_cg_0;
+
 
 for i=1:n_rotor
     r_pivot{i}=aircraft.r_pivot{i};
@@ -250,7 +250,7 @@ end
 
 %%  Mp calculation
 
-Mp=skew(r_b_0-r_cg_0)*m_B*C_bv*g;
+Mp=skew(r_b_0)*m_B*C_bv*g;
    
 for i=1:n_rotor
     Mp=Mp+ skew(r_r{i})*m_r{i}*C_bv*g;
@@ -265,14 +265,11 @@ end
 
 
 Torque_B= M_B_aero+M_B_prop;
-
-% Change sinal from AVL to Body
-Torque_B =  -Torque_B;
-
+       
 %% Angular aceleration
 
-% + Mp
-w_dot_02=  A\(Torque_B + Mp - B*w - C*V_dot - D*V -E);
+
+w_dot_02=  A\(Torque_B +Mp - B*w - C*V_dot - D*V -E);
 
 % D
 % V
@@ -297,10 +294,9 @@ F=[0
    0];
 
 
-
-for i=1:n_rotor
+for i=1:aircraft.n_wing
     F = F ...
-        + m_r{i}*((skew(w_dot) + skew(w)*skew(w))*r_r{i} ...
+        + aircraft.m_r{i}*((skew(w_dot) + skew(w)*skew(w))*aircraft.r_r{i} ...
         + 2*skew(w)*V_r{i} + a_r{i});
 end
 
