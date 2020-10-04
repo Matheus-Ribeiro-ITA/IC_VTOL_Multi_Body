@@ -6,7 +6,7 @@ global g
 % x=X(1);
 % y=X(2);
 % h=X(3);
-spin_speed = 10^3;
+
 
 V=X(4:6);
 V_dot=Xp(4:6);
@@ -39,13 +39,10 @@ mat{4}=zeros(3,3);
 
 m_r=point;
 
-
 r_pivot=vec;
 I_r=vec;
 w_r=vec;
 w_dot_r=vec;
-w_spin=vec;
-w_dot_spin=vec;
 V_r=vec;
 a_r=vec;
 r_r_pivot=vec;
@@ -68,7 +65,6 @@ m_B = aircraft.m_B;
 r_b_0 = aircraft.r_b_0;
 I_B = aircraft.I_B;
 r_cg_0 = aircraft.r_cg_0;
-m_total = aircraft.m_total;
 
 
 for i=1:n_rotor
@@ -117,11 +113,6 @@ end
 for i=1:n_rotor
 w_r{i}=[0;sigma_dot;0];
 w_dot_r{i}=[0;sigma_dot_dot;0];
-end
-
-for i=1:n_rotor
-w_spin{i}=[spin_speed;0;0];
-w_dot_spin{i}=[0;0;0];
 end
 
 for i=1:n_rotor
@@ -203,7 +194,7 @@ A=I_B;
 
 % IB_til = T_r{i}*aircraft.I_r{i}*T_r{i}' + aircraft.m_r{i}*R_T_r{i} 
 for i=1:n_rotor
-    A= A+ T_r{i}*I_r{i}*T_r{i}' + m_r{i}*R_T_r{i}; 
+    A= A+ T_r{i}*I_r{i}*T_r{i}' + m_r{i}*R_T_r{i} ; 
 end
 
 
@@ -252,9 +243,9 @@ for i=1:n_rotor
         + T_r{i}*I_r{i}*T_dot_r{i}' ...
         + m_r{i}*R_dot_T_r{i} ...
         + omega_B*( T_r{i}*I_r{i}*T_r{i}' + m_r{i}*R_T_r{i} )...
-        )*(R_r{i}*w_r{i} + R_r{i}*w_spin{i} ) ... % 1º Termo
+        )*R_r{i}*w_r{i} ... % 1º Termo
         + (T_r{i}*I_r{i}*T_r{i}' + m_r{i}*R_T_r{i})...
-        *(R_dot_r{i}*(w_r{i} + w_spin{i}) + R_r{i}*(w_dot_r{i} + w_dot_spin{i} ) ) ... % 2º Termo
+        *(T_dot_r{i}*w_r{i} + T_r{i}*w_dot_r{i}) ... % 2º Termo
         + m_r{i}*( skew(T_dot_r{i}*r_r_pivot{i})*...
         (omega_B*r_r{i})+T_dot_r{i}*r_r_pivot{i}) ...
         + skew(r_r{i})*((omega_B_dot+omega_B*omega_B)*r_r{i} +(2*omega_B*T_dot_r{i}+T_dot_dot_r{i})*r_r_pivot{i} );
