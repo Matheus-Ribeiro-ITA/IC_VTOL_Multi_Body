@@ -3,13 +3,13 @@ clc
 close all
 
 
-load Trim_results_multi_body/trim_results_opt_06.mat
+load trim_results_CG_multi_body.mat
 Mat_X_eq_01=Mat_X_eq;
 Mat_U_eq_01=Mat_U_eq;
 Mat_Y_eq_01=Mat_Y_eq;
 Mat_V_eq_01=Mat_V_eq;
 
-load Trim_results_uni_body/trim_results_opt_03.mat
+load trim_results_CG_uni_body.mat
 Mat_X_eq_02=Mat_X_eq;
 Mat_U_eq_02=Mat_U_eq;
 Mat_Y_eq_02=Mat_Y_eq;
@@ -19,16 +19,20 @@ Mat_V_eq_02=Mat_V_eq;
     figure
     subplot(2,1,1)
     hold on
-    plot(Mat_V_eq_01(:),Mat_U_eq_01(1,:)*100)
-    plot(Mat_V_eq_02(:),Mat_U_eq_02(1,:)*100)
+    for i=1:length(Mat_U_eq)
+    plot(Mat_V_eq_01{i}(:),Mat_U_eq_01{i}(1,:)*100)
+%     plot(Mat_V_eq_02{i}(:),Mat_U_eq_02{i}(1,:)*100)
+    end
     xlabel('V (m/s)')
     ylabel('Thrust (%)')
     legend('Multi-body','Uni-body')
     
     subplot(2,1,2)
     hold on 
-    plot(Mat_V_eq_01(:),Mat_U_eq_01(2,:))
-    plot(Mat_V_eq_02(:),Mat_U_eq_02(2,:))
+    for i=1:length(Mat_U_eq)
+    plot(Mat_V_eq_01{i}(:),Mat_U_eq_01{i}(2,:))
+%     plot(Mat_V_eq_02{i}(:),Mat_U_eq_02{i}(2,:))
+    end
     xlabel('V (m/s)')
     ylabel('Elevator (º)')
     axis([0 20 -20 20 ])
@@ -38,16 +42,20 @@ Mat_V_eq_02=Mat_V_eq;
     figure
     subplot(2,1,1)
     hold on
-    plot(Mat_V_eq_01(:),Mat_X_eq_01(13,:)*180/pi)
-    plot(Mat_V_eq_02(:),Mat_X_eq_02(13,:)*180/pi)
+    for i=1:length(Mat_U_eq)
+    plot(Mat_V_eq_01{i}(:),Mat_X_eq_01{i}(13,:)*180/pi)
+%     plot(Mat_V_eq_02{i}(:),Mat_X_eq_02{i}(13,:)*180/pi)
+    end
     xlabel('V (m/s)')
-    ylabel('Tilt Angle (º)')
+    ylabel('Sigma (º)')
     legend('Multi-body','Uni-body')
 
     subplot(2,1,2)
     hold on
-    plot(Mat_V_eq_01(:),Mat_Y_eq_01(8,:))
-    plot(Mat_V_eq_02(:),Mat_Y_eq_02(2,:))
+    for i=1:length(Mat_U_eq)
+    plot(Mat_V_eq_01{i}(:),Mat_Y_eq_01{i}(8,:))
+%     plot(Mat_V_eq_02{i}(:),Mat_Y_eq_02{i}(2,:))
+    end
     xlabel('V (m/s)')
     ylabel('alpha (º)')
     

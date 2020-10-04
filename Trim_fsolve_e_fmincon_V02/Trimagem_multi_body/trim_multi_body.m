@@ -218,7 +218,7 @@ i=i+1;
 
 end
 %%
-save ..\Trim_results_multi_body/trim_results_opt_05.mat Mat_X_eq Mat_U_eq Mat_Y_eq Mat_V_eq
+save ..\Trim_results_multi_body/trim_results_opt_06.mat Mat_X_eq Mat_U_eq Mat_Y_eq Mat_V_eq
 time_opt= toc
 
 save time.mat time_opt
