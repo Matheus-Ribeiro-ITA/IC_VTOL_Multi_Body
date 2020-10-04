@@ -147,9 +147,11 @@ end
 % ---------------------------------------------------------------------
 
 for i=1:n_rotor
-r_r_pivot{i}=DCM_original(2,-sigma)*aircraft.r_r_pivot{i}; % Gira o pivot
+r_r_pivot{i}= DCM_original(2,-sigma)*aircraft.r_r_pivot{i}; % Gira o pivot
 r_r{i} = r_r_pivot{i} + r_pivot{i}; % Muda pra ref. body
 end
+% sigma*180/(pi)
+% r_r_pivot{1}
 
 for i=1:n_rotor
 R_T_r{i}=[r_r{i}(2)^2+r_r{i}(3)^2   -r_r{i}(1)*r_r{i}(2)   -r_r{i}(1)*r_r{i}(3)
@@ -250,7 +252,7 @@ end
 
 %%  Mp calculation
 
-Mp=skew(r_b_0-r_cg_0)*m_B*C_bv*g;
+Mp=skew((r_b_0-r_cg_0))*m_B*C_bv*g;
    
 for i=1:n_rotor
     Mp=Mp+ skew(r_r{i})*m_r{i}*C_bv*g;
@@ -267,7 +269,7 @@ end
 Torque_B= M_B_aero+M_B_prop;
 
 % Change sinal from AVL to Body
-Torque_B =  -Torque_B;
+Torque_B =  Torque_B;
 
 %% Angular aceleration
 

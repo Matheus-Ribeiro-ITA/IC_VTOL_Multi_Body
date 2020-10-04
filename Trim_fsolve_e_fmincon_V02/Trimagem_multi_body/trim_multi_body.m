@@ -120,7 +120,7 @@ sigma_eq = 0;
 beta_eq = 0;
 
 
-for V_eq = 4:0.2:20
+for V_eq = 4:0.5:18
 
 trim_par = struct('V',V_eq,...
     'h',h_eq,...
@@ -218,7 +218,7 @@ i=i+1;
 
 end
 %%
-save ..\Trim_results_multi_body/trim_results_opt_02.mat Mat_X_eq Mat_U_eq Mat_Y_eq Mat_V_eq
+save ..\Trim_results_multi_body/trim_results_opt_05.mat Mat_X_eq Mat_U_eq Mat_Y_eq Mat_V_eq
 time_opt= toc
 
 save time.mat time_opt

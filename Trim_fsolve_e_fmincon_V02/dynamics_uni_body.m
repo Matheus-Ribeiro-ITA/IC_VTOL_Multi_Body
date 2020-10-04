@@ -36,15 +36,15 @@ g_b=C_bv*g;
 
 m = aircraft.m_total;
 
-r_0=aircraft.r_b_0*aircraft.m_B;
-
-for i=1:aircraft.n_rotor
-r_r_pivot{i}=DCM_original(2,sigma)*(aircraft.r_r_pivot{i}); % Gira o pivot
-r_r_0{i} = r_r_pivot{i} + aircraft.r_pivot_0{i}; % Muda pra ref. inercial
-r_0 = r_0 + r_r_0{i}*aircraft.m_r{i};
-end
-
-r_0= r_0/aircraft.m_total;
+% r_0=aircraft.r_b_0*aircraft.m_B;
+% 
+% for i=1:aircraft.n_rotor
+% r_r_pivot{i}=DCM_original(2,sigma)*(aircraft.r_r_pivot{i}); % Gira o pivot
+% r_r_0{i} = r_r_pivot{i} + aircraft.r_pivot_0{i}; % Muda pra ref. inercial
+% r_0 = r_0 + r_r_0{i}*aircraft.m_r{i};
+% end
+% 
+% r_0= r_0/aircraft.m_total;
 
 
 % r_C_b = r_0-aircraft.r_b_0;

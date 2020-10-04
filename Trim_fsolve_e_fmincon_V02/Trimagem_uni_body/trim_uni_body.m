@@ -97,10 +97,6 @@ Y_0 = zeros(17,1);
 i=1;
 
 % First initial conditions
-
-
-for V_eq = 4:0.2:20
-
 cg(1,1)= 0.29;
 cg(2,1) = 0;        % PN=0.3 Catia = 0.3336
 cg(3,1)= 0.0922;    % PN=    Catia = 0.0922
@@ -110,6 +106,10 @@ carga = 1;
 % Conserta o CG do corpo rigido
 aircraft = aircraft_gen(carga,cg);
 aircraft.r_0;
+
+for V_eq = 4:0.2:20
+
+
 
 % V_eq = 2; % m/s
 h_eq = 0;
@@ -226,7 +226,7 @@ i=i+1;
 end
 %%
 
-save ..\Trim_results_uni_body/trim_results_opt_02.mat Mat_X_eq Mat_U_eq Mat_Y_eq Mat_V_eq
+save ..\Trim_results_uni_body/trim_results_opt_03.mat Mat_X_eq Mat_U_eq Mat_Y_eq Mat_V_eq
 
 time_opt= toc
 
