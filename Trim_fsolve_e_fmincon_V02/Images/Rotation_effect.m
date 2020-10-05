@@ -3,14 +3,15 @@ clc
 close all
 
 
-% load Trim_results_multi_body/trim_results_opt_06.mat
-load Trim_results_Rudder/trim_results_opt_01_crr.mat 
+% % load Trim_results_multi_body/trim_results_opt_06.mat
+% load ../Trim_results_Rudder/trim_results_opt_01_crr.mat 
+load ../Trim_results_Rudder/trim_results_opt_01_crr.mat 
 Mat_X_eq_01=Mat_X_eq;
 Mat_U_eq_01=Mat_U_eq;
 Mat_Y_eq_01=Mat_Y_eq;
 Mat_V_eq_01=Mat_V_eq;
 
-load Trim_results_uni_body/trim_results_opt_03.mat
+load ../Trim_results_uni_body/trim_results_opt_03.mat
 % load Trim_results_Rudder/trim_results_opt_01.mat 
 % load Trim_results_multi_body/trim_results_opt_06.mat
 Mat_X_eq_02=Mat_X_eq;
