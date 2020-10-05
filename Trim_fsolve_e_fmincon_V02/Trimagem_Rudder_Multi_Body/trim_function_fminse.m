@@ -5,11 +5,13 @@ trim_par.alpha_eq=alpha_eq;
 
 
 x_eq_0 =zeros(5,1);    
-x_eq_0(1) = ini_0.U_0(2,1);
-x_eq_0(2) = ini_0.X_0(13,1);
+x_eq_0(1) = ini_0.U_0(2,1); % Elevator
+x_eq_0(2) = ini_0.X_0(13,1); % Sigma (Tilt Anlge)
 x_eq_0(3) = V_eq;
-x_eq_0(4) = ini_0.X_0(8,1); %Theta
-x_eq_0(5) = ini_0.U_0(1,1);
+x_eq_0(4) = ini_0.X_0(8,1); % Theta
+x_eq_0(5) = ini_0.U_0(1,1); % Throtle
+x_eq_0(6) = ini_0.U_0(3,1); % Aileron
+x_eq_0(7) = ini_0.U_0(4,1); % Rudder
 
 
 
@@ -28,7 +30,10 @@ else
     x_eq_1(2) = V_eq;
     x_eq_1(3) = ini_0.U_0(1,1);
     x_eq_1(4) = ini_0.X_0(8,1); %Theta
-    x_eq_1(5) = ini_0.X_0(6,1); %Theta
+    x_eq_1(5) = ini_0.X_0(6,1); %
+    x_eq_1(6) = ini_0.U_0(3,1); % Aileron
+    x_eq_1(7) = ini_0.U_0(4,1); % Rudder
+    
     [x_eq_2,fval,exitflag,output,jacobian] = fsolve(@trim_dynamics_sigma_null,x_eq_1,options,aircraft,trim_par);
     [~,X_eq,U_eq,Y_eq]  = trim_dynamics_sigma_null(x_eq_2,aircraft,trim_par);
 
