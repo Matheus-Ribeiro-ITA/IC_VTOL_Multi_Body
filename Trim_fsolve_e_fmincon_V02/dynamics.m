@@ -6,7 +6,7 @@ global g
 % x=X(1);
 % y=X(2);
 % h=X(3);
-spin_speed = 10^3;
+spin_speed = aircraft.spin_speed_RPM/60*(2*pi);
 
 V=X(4:6);
 V_dot=Xp(4:6);
@@ -119,10 +119,15 @@ w_r{i}=[0;sigma_dot;0];
 w_dot_r{i}=[0;sigma_dot_dot;0];
 end
 
-for i=1:n_rotor
+for i=1:2:n_rotor
 w_spin{i}=[spin_speed;0;0];
 w_dot_spin{i}=[0;0;0];
 end
+for i=2:2:n_rotor
+w_spin{i}=[-spin_speed;0;0];
+w_dot_spin{i}=[0;0;0];
+end
+
 
 for i=1:n_rotor
 V_r{i}= R_dot_r{i}*aircraft.r_r_pivot{i};
@@ -260,10 +265,11 @@ for i=1:n_rotor
         + skew(r_r{i})*((omega_B_dot+omega_B*omega_B)*r_r{i} +(2*omega_B*T_dot_r{i}+T_dot_dot_r{i})*r_r_pivot{i} );
 end
 
+
 %%  Mp calculation
 
 Mp=skew((r_b_0-r_cg_0))*m_B*C_bv*g;
-   
+
 for i=1:n_rotor
     Mp=Mp+ skew(r_r{i})*m_r{i}*C_bv*g;
 end
@@ -283,7 +289,7 @@ Torque_B =  Torque_B;
 
 %% Angular aceleration
 
-% + Mp
+% 
 w_dot_02=  A\(Torque_B + Mp - B*w - C*V_dot - D*V -E);
 
 % D
