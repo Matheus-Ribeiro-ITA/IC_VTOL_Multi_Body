@@ -3,13 +3,15 @@ clc
 close all
 
 
-load trim_results_CG_multi_body.mat
+% load Trim_results_multi_body/trim_results_final_crr.mat
+load Multi_Body.mat 
 Mat_X_eq_01=Mat_X_eq;
 Mat_U_eq_01=Mat_U_eq;
 Mat_Y_eq_01=Mat_Y_eq;
 Mat_V_eq_01=Mat_V_eq;
 
-load trim_results_CG_uni_body.mat
+% load Trim_results_uni_body/trim_results_opt_03.mat
+ load Uni_Body.mat
 Mat_X_eq_02=Mat_X_eq;
 Mat_U_eq_02=Mat_U_eq;
 Mat_Y_eq_02=Mat_Y_eq;
@@ -19,20 +21,16 @@ Mat_V_eq_02=Mat_V_eq;
     figure
     subplot(2,1,1)
     hold on
-    for i=1:length(Mat_U_eq)
-    plot(Mat_V_eq_01{i}(:),Mat_U_eq_01{i}(1,:)*100)
-%     plot(Mat_V_eq_02{i}(:),Mat_U_eq_02{i}(1,:)*100)
-    end
+    plot(Mat_V_eq_01(:),Mat_U_eq_01(1,:)*100,'r--')
+    plot(Mat_V_eq_02(:),Mat_U_eq_02(1,:)*100,'k')
     xlabel('V (m/s)')
     ylabel('Thrust (%)')
     legend('Multi-body','Uni-body')
     
     subplot(2,1,2)
     hold on 
-    for i=1:length(Mat_U_eq)
-    plot(Mat_V_eq_01{i}(:),Mat_U_eq_01{i}(2,:))
-%     plot(Mat_V_eq_02{i}(:),Mat_U_eq_02{i}(2,:))
-    end
+    plot(Mat_V_eq_01(:),Mat_U_eq_01(2,:),'r--')
+    plot(Mat_V_eq_02(:),Mat_U_eq_02(2,:),'k')
     xlabel('V (m/s)')
     ylabel('Elevator (º)')
     axis([0 20 -20 20 ])
@@ -42,22 +40,34 @@ Mat_V_eq_02=Mat_V_eq;
     figure
     subplot(2,1,1)
     hold on
-    for i=1:length(Mat_U_eq)
-    plot(Mat_V_eq_01{i}(:),Mat_X_eq_01{i}(13,:)*180/pi)
-%     plot(Mat_V_eq_02{i}(:),Mat_X_eq_02{i}(13,:)*180/pi)
-    end
+    plot(Mat_V_eq_01(:),Mat_X_eq_01(13,:)*180/pi,'r--')
+    plot(Mat_V_eq_02(:),Mat_X_eq_02(13,:)*180/pi,'k')
     xlabel('V (m/s)')
-    ylabel('Sigma (º)')
+    ylabel('Tilt Angle (º)')
     legend('Multi-body','Uni-body')
 
     subplot(2,1,2)
     hold on
-    for i=1:length(Mat_U_eq)
-    plot(Mat_V_eq_01{i}(:),Mat_Y_eq_01{i}(8,:))
-%     plot(Mat_V_eq_02{i}(:),Mat_Y_eq_02{i}(2,:))
-    end
+    plot(Mat_V_eq_01(:),Mat_Y_eq_01(8,:),'r--')
+    plot(Mat_V_eq_02(:),Mat_Y_eq_02(2,:),'k')
     xlabel('V (m/s)')
     ylabel('alpha (º)')
+
+    figure
+    subplot(2,1,1)
+    hold on
+    plot(Mat_V_eq_01(:),Mat_U_eq_01(3,:),'r--')
+    plot(Mat_V_eq_02(:),Mat_U_eq_02(3,:),'k')
+    xlabel('V (m/s)')
+    ylabel('Ailerton (º)')
+    legend('Multi-body','Uni-body')
+
+    subplot(2,1,2)
+    hold on
+    plot(Mat_V_eq_01(:),Mat_U_eq_01(4,:),'r--')
+    plot(Mat_V_eq_02(:),Mat_U_eq_02(4,:),'k')
+    xlabel('V (m/s)')
+    ylabel('Rudder (º)')
     
     
 

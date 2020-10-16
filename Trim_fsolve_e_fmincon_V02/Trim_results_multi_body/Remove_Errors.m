@@ -2,7 +2,7 @@ clear
 clc
 
 
-load trim_results_opt_02.mat
+load trim_results_final.mat
 
 
 figure
@@ -13,7 +13,7 @@ ylabel('Sigma (º)')
 legend('Multi-body')
 
 
-indice_remover = [40];
+indice_remover = [108,104,1];
 
 for i=1:length(indice_remover)
     Mat_V_eq(:,indice_remover(i)) = [];
@@ -55,4 +55,4 @@ ylabel('alpha (º)')
 
 
 
-save trim_results_opt_02_crr.mat Mat_X_eq Mat_U_eq Mat_Y_eq Mat_V_eq
+save trim_results_final_crr.mat Mat_X_eq Mat_U_eq Mat_Y_eq Mat_V_eq

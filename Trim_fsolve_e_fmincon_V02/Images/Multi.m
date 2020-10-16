@@ -3,39 +3,26 @@ clc
 close all
 
 
-% load ../Trim_results_Rudder/trim_results_opt_01_crr.mat 
-load Rotation_Multi_Body.mat 
-
-% Rotarion speed
-% sigma_dot= 10*pi/180;
-% sigma_dot_dot= 5*pi/180;
-
+% load Trim_results_multi_body/trim_results_final_crr.mat
+load Multi_Body.mat 
 Mat_X_eq_01=Mat_X_eq;
 Mat_U_eq_01=Mat_U_eq;
 Mat_Y_eq_01=Mat_Y_eq;
 Mat_V_eq_01=Mat_V_eq;
 
-% load ../Trim_results_uni_body/trim_results_opt_03.mat
-load Uni_body.mat
-Mat_X_eq_02=Mat_X_eq;
-Mat_U_eq_02=Mat_U_eq;
-Mat_Y_eq_02=Mat_Y_eq;
-Mat_V_eq_02=Mat_V_eq;
     
 %% --------------------------------------------------------------
     figure
     subplot(2,1,1)
     hold on
-    plot(Mat_V_eq_01(:),Mat_U_eq_01(1,:)*100,'r--')
-    plot(Mat_V_eq_02(:),Mat_U_eq_02(1,:)*100,'k')
+    plot(Mat_V_eq_01(:),Mat_U_eq_01(1,:)*100,'k')
     xlabel('V (m/s)')
     ylabel('Thrust (%)')
     legend('Multi-body','Uni-body')
     
     subplot(2,1,2)
     hold on 
-    plot(Mat_V_eq_01(:),Mat_U_eq_01(2,:),'r--')
-    plot(Mat_V_eq_02(:),Mat_U_eq_02(2,:),'k')
+    plot(Mat_V_eq_01(:),Mat_U_eq_01(2,:),'k')
     xlabel('V (m/s)')
     ylabel('Elevator (º)')
     axis([0 20 -20 20 ])
@@ -45,32 +32,28 @@ Mat_V_eq_02=Mat_V_eq;
     figure
     subplot(2,1,1)
     hold on
-    plot(Mat_V_eq_01(:),Mat_X_eq_01(13,:)*180/pi,'r--')
-    plot(Mat_V_eq_02(:),Mat_X_eq_02(13,:)*180/pi,'k')
+    plot(Mat_V_eq_01(:),Mat_X_eq_01(13,:)*180/pi,'k')
     xlabel('V (m/s)')
     ylabel('Tilt Angle (º)')
     legend('Multi-body','Uni-body')
 
     subplot(2,1,2)
     hold on
-    plot(Mat_V_eq_01(:),Mat_Y_eq_01(8,:),'r--')
-    plot(Mat_V_eq_02(:),Mat_Y_eq_02(2,:),'k')
+    plot(Mat_V_eq_01(:),Mat_Y_eq_01(8,:),'k')
     xlabel('V (m/s)')
     ylabel('alpha (º)')
 
     figure
     subplot(2,1,1)
     hold on
-    plot(Mat_V_eq_01(:),Mat_U_eq_01(3,:),'r--')
-    plot(Mat_V_eq_02(:),Mat_U_eq_02(3,:),'k')
+    plot(Mat_V_eq_01(:),Mat_U_eq_01(3,:),'k')
     xlabel('V (m/s)')
-    ylabel('Aileron (º)')
+    ylabel('Ailerton (º)')
     legend('Multi-body','Uni-body')
 
     subplot(2,1,2)
     hold on
-    plot(Mat_V_eq_01(:),Mat_U_eq_01(4,:),'r--')
-    plot(Mat_V_eq_02(:),Mat_U_eq_02(4,:),'k')
+    plot(Mat_V_eq_01(:),Mat_U_eq_01(4,:),'k')
     xlabel('V (m/s)')
     ylabel('Rudder (º)')
     
