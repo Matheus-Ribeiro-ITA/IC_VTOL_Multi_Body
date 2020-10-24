@@ -1,0 +1,16 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%% Next Steps %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+FOLDER:
+%----[FLIGHT SIMULATOR]--------------------------
+1. Fix main folders paths
+2. Add wind
+3. Add rotor wing interference
+
+%----[TRIM VTOL]---------------------------------
+
+1. Fix Multi Body equations
+2. Change struct data type to loose data type to 
+speed up the trim results
+3. Finish ABCD_generator
